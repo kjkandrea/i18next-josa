@@ -16,8 +16,10 @@ i18next
   })
   .then(render);
 
+const $app = document.querySelector<HTMLDivElement>('#app')!;
+
 function render(t: TFunction) {
-  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+  $app.innerHTML = `
   <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
