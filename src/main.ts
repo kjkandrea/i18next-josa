@@ -1,5 +1,6 @@
 import './style.css';
 import i18next, {TFunction} from 'i18next';
+import pokemonNames from './pokemonNames';
 
 i18next
   .init({
@@ -17,11 +18,11 @@ i18next
   .then(t => {
     if (i18next.services.formatter) {
       i18next.services.formatter.add('이/가', value => {
-        return value + '이';
+        return value + (checkBatchimEnding(value) ? '이' : '가');
       });
 
       i18next.services.formatter.add('을/를', value => {
-        return value + '을';
+        return value + (checkBatchimEnding(value) ? '을' : '를');
       });
     }
 
@@ -30,14 +31,35 @@ i18next
 
 const $app = document.querySelector<HTMLDivElement>('#app')!;
 
+console.log(pokemonNames);
+
 function render(t: TFunction) {
   $app.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <p>${t('wild_pokemon_appeared', {pokemon: '리자몽'})}</p>
-    <p>${t('caught_a_pokemon', {pokemon: '리자몽'})}</p>
-  </div>
-`;
+    <div>
+      <ul>
+        ${pokemonNames
+          .map(
+            pokemon => `
+            <li>
+              <p>${t('wild_pokemon_appeared', {pokemon})}</p>
+              <p>${t('caught_a_pokemon', {pokemon})}</p>
+            </li>
+          `
+          )
+          .join('')}
+      </ul>
+    </div>
+  `;
+}
+
+/**
+ * 마지막 글자가 받침을 가지는지 확인
+ */
+function checkBatchimEnding(word: string): boolean {
+  const lastLetter = word[word.length - 1];
+  const uni = lastLetter.charCodeAt(0);
+
+  if (uni < 44032 || uni > 55203) return false;
+
+  return (uni - 44032) % 28 !== 0;
 }
