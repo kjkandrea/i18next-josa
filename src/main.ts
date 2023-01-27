@@ -9,19 +9,19 @@ i18next
     resources: {
       ko: {
         translation: {
-          wild_pokemon_appeared: '야생의 {{pokemon, 이/가}} 튀어나왔다!',
-          caught_a_pokemon: '신난다! {{pokemon, 을/를}} 잡았다!',
+          wild_pokemon_appeared: '야생의 {{pokemon, 이가}} 튀어나왔다!',
+          caught_a_pokemon: '신난다! {{pokemon, 을를}} 잡았다!',
         },
       },
     },
   })
   .then(t => {
     if (i18next.services.formatter) {
-      i18next.services.formatter.add('이/가', value => {
+      i18next.services.formatter.add('이가', value => {
         return value + (checkBatchimEnding(value) ? '이' : '가');
       });
 
-      i18next.services.formatter.add('을/를', value => {
+      i18next.services.formatter.add('을를', value => {
         return value + (checkBatchimEnding(value) ? '을' : '를');
       });
     }
@@ -59,7 +59,9 @@ function checkBatchimEnding(word: string): boolean {
   const lastLetter = word[word.length - 1];
   const uni = lastLetter.charCodeAt(0);
 
+  // 한글 범위 밖일 경우
   if (uni < 44032 || uni > 55203) return false;
 
+  // 받침이 있을 경우 true
   return (uni - 44032) % 28 !== 0;
 }
