@@ -31,8 +31,6 @@ i18next
 
 const $app = document.querySelector<HTMLDivElement>('#app')!;
 
-console.log(pokemonNames);
-
 function render(t: TFunction) {
   $app.innerHTML = `
     <div>
